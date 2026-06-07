@@ -1,0 +1,11 @@
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.*
+go.work
+go.work.sum
+.env
+_exports/
