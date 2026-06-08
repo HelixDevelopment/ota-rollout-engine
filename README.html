@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>README</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="ota-rollout-engine">ota-rollout-engine</h1>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Revision</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Created</td>
+<td>2026-06-07</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>implemented</td>
+</tr>
+<tr>
+<td>Part of</td>
+<td><a href="https://github.com/HelixDevelopment/helix_ota">Helix
+OTA</a></td>
+</tr>
+<tr>
+<td>Module path</td>
+<td><code>github.com/HelixDevelopment/ota-rollout-engine</code></td>
+</tr>
+<tr>
+<td>Language</td>
+<td>go (1.26)</td>
+</tr>
+<tr>
+<td>License</td>
+<td>Apache-2.0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="overview">Overview</h2>
+<p><code>ota-rollout-engine</code> (package <code>rollout</code>) is an
+OS-agnostic, <strong>I/O-free</strong> staged-rollout engine. It turns
+an all-at-once delivery into a sequence of percentage-gated phases, each
+guarded by success/error thresholds and a duration, and decides — from a
+health verdict supplied by the caller — whether to <strong>HALT,
+ADVANCE, HOLD, or COMPLETE</strong> a rollout, enforcing the safety
+invariant that <strong>halt wins over advance</strong> when both could
+trigger in the same window (<code>doc.go</code>,
+<code>decide.go</code>).</p>
+<p>It contains <strong>no HTTP, database, disk, network, or OS
+specifics</strong>. All side effects flow through two ports —
+<code>StoragePort</code> (persist/load state) and <code>Clock</code>
+(current time, so durations are deterministically testable). Telemetry
+is never ingested here: the caller computes a <code>HealthVerdict</code>
+from its own pipeline (e.g. <a
+href="https://github.com/HelixDevelopment/ota-telemetry-schema"><code>ota-telemetry-schema</code></a>)
+and hands it to <code>Engine.Evaluate</code>. It depends on the stdlib
+plus <a
+href="https://github.com/HelixDevelopment/ota-protocol"><code>ota-protocol</code></a>
+for the shared <code>DeviceDeploymentStatus</code> enum only.</p>
+<p><strong>Cohort selection</strong> is deterministic and stable: a
+device is in a phase’s cohort when
+<code>FNV-1a(deviceID+0x00+deploymentID) mod 100 &lt; cumulativePercentage</code>
+(<code>cohort.go</code>). Because the hash is fixed and percentages
+strictly increase across ordered phases, cohort membership only grows as
+the rollout widens (monotonic growth).</p>
+<h2 id="public-api">Public API</h2>
+<h3 id="engine-engine.go">Engine (<code>engine.go</code>)</h3>
+<ul>
+<li><code>New(store StoragePort, clock Clock) (*Engine, error)</code> —
+both ports must be non-nil (<code>ErrNilPort</code>).</li>
+<li><code>(*Engine).Create(ctx, deploymentID string, phases []Phase) (State, error)</code>
+— validate the plan, persist initial <code>StatusPending</code>.</li>
+<li><code>(*Engine).Start(ctx, deploymentID string) (State, error)</code>
+— activate the first phase, stamping its start time; idempotent on an
+already-active rollout.</li>
+<li><code>(*Engine).Evaluate(ctx, deploymentID string, v HealthVerdict) (Decision, error)</code>
+— apply one verdict to the current phase, persist any transition, return
+the <code>Decision</code>. Idempotent at terminal status.</li>
+</ul>
+<h3 id="plan-state-types.go">Plan &amp; state
+(<code>types.go</code>)</h3>
+<ul>
+<li><code>Phase</code> — <code>Percentage</code> (cumulative,
+<code>(0,100]</code>), <code>SuccessThreshold</code>,
+<code>ErrorThreshold</code> (fractions <code>[0,1]</code>),
+<code>Duration</code>, <code>AutoProgress</code>.</li>
+<li><code>Status</code> enum: <code>StatusPending</code>,
+<code>StatusActive</code>, <code>StatusHalted</code>,
+<code>StatusHeld</code>, <code>StatusCompleted</code> (with
+<code>Valid()</code>).</li>
+<li><code>State</code> — persisted plan + cursor
+(<code>DeploymentID</code>, <code>Phases</code>,
+<code>CurrentPhase</code>, <code>Status</code>,
+<code>PhaseStartedAt</code>, <code>UpdatedAt</code>);
+<code>Clone()</code>, <code>Phase() (Phase, bool)</code>.</li>
+<li>Plan-validation sentinels: <code>ErrNoPhases</code>,
+<code>ErrEmptyDeploymentID</code>, <code>ErrPercentageRange</code>,
+<code>ErrPercentageNotMonotonic</code>, <code>ErrThresholdRange</code>,
+<code>ErrDurationNegative</code>,
+<code>ErrFinalPercentageNot100</code>.</li>
+</ul>
+<h3 id="verdict-decision-verdict.go">Verdict &amp; decision
+(<code>verdict.go</code>)</h3>
+<ul>
+<li><code>HealthVerdict</code> — caller-supplied current-phase summary:
+<code>SuccessRate</code>, <code>ErrorRate</code> (fractions
+<code>[0,1]</code>), <code>PostBootHealthFailed</code>. Range sentinel
+<code>ErrVerdictRange</code>.</li>
+<li><code>Action</code> enum: <code>ActionHalt</code>,
+<code>ActionAdvance</code>, <code>ActionHold</code>,
+<code>ActionComplete</code>.</li>
+<li><code>Reason</code> enum: <code>ReasonErrorThreshold</code>,
+<code>ReasonPostBootFailed</code>, <code>ReasonSuccessThreshold</code>,
+<code>ReasonWindowOpen</code>, <code>ReasonWindowExpired</code>,
+<code>ReasonAutoProgressOff</code>,
+<code>ReasonNoActivePhase</code>.</li>
+<li><code>Decision</code> — <code>Action</code>, <code>Reason</code>,
+<code>Status</code>, and
+<code>DeviceStatus otaprotocol.DeviceDeploymentStatus</code>.</li>
+</ul>
+<h3 id="ports-cohort-ports.go-cohort.go">Ports &amp; cohort
+(<code>ports.go</code>, <code>cohort.go</code>)</h3>
+<ul>
+<li><code>StoragePort</code> interface (<code>Load</code>,
+<code>Save</code>) with <code>ErrNotFound</code> sentinel;
+<code>Clock</code> interface (<code>Now</code>);
+<code>NewSystemClock() Clock</code>.</li>
+<li><code>InCohort(deviceID, deploymentID string, cumulativePercentage int) bool</code>
+— deterministic, monotonic cohort membership.</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> main</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="op">(</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;context&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;time&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    rollout <span class="st">&quot;github.com/HelixDevelopment/ota-rollout-engine&quot;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// store is your StoragePort implementation (in-memory map, SQL, KV...).</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> store rollout<span class="op">.</span>StoragePort <span class="op">=</span> newMyStore<span class="op">()</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    eng<span class="op">,</span> err <span class="op">:=</span> rollout<span class="op">.</span>New<span class="op">(</span>store<span class="op">,</span> rollout<span class="op">.</span>NewSystemClock<span class="op">())</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">panic</span><span class="op">(</span>err<span class="op">)</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    ctx <span class="op">:=</span> context<span class="op">.</span>Background<span class="op">()</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    phases <span class="op">:=</span> <span class="op">[]</span>rollout<span class="op">.</span>Phase<span class="op">{</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span>Percentage<span class="op">:</span> <span class="dv">10</span><span class="op">,</span> SuccessThreshold<span class="op">:</span> <span class="fl">0.95</span><span class="op">,</span> ErrorThreshold<span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> Duration<span class="op">:</span> time<span class="op">.</span>Hour<span class="op">,</span> AutoProgress<span class="op">:</span> <span class="ot">true</span><span class="op">},</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span>Percentage<span class="op">:</span> <span class="dv">100</span><span class="op">,</span> SuccessThreshold<span class="op">:</span> <span class="fl">0.98</span><span class="op">,</span> ErrorThreshold<span class="op">:</span> <span class="fl">0.02</span><span class="op">,</span> AutoProgress<span class="op">:</span> <span class="ot">false</span><span class="op">},</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> _<span class="op">,</span> err <span class="op">:=</span> eng<span class="op">.</span>Create<span class="op">(</span>ctx<span class="op">,</span> <span class="st">&quot;dep-1&quot;</span><span class="op">,</span> phases<span class="op">);</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="bu">panic</span><span class="op">(</span>err<span class="op">)</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> _<span class="op">,</span> err <span class="op">:=</span> eng<span class="op">.</span>Start<span class="op">(</span>ctx<span class="op">,</span> <span class="st">&quot;dep-1&quot;</span><span class="op">);</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">panic</span><span class="op">(</span>err<span class="op">)</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    dec<span class="op">,</span> _ <span class="op">:=</span> eng<span class="op">.</span>Evaluate<span class="op">(</span>ctx<span class="op">,</span> <span class="st">&quot;dep-1&quot;</span><span class="op">,</span> rollout<span class="op">.</span>HealthVerdict<span class="op">{</span>SuccessRate<span class="op">:</span> <span class="fl">0.99</span><span class="op">,</span> ErrorRate<span class="op">:</span> <span class="fl">0.0</span><span class="op">})</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    fmt<span class="op">.</span>Println<span class="op">(</span>dec<span class="op">.</span>Action<span class="op">,</span> dec<span class="op">.</span>Reason<span class="op">)</span> <span class="co">// advance success_threshold_met</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Deterministic cohort membership:</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    fmt<span class="op">.</span>Println<span class="op">(</span>rollout<span class="op">.</span>InCohort<span class="op">(</span><span class="st">&quot;device-42&quot;</span><span class="op">,</span> <span class="st">&quot;dep-1&quot;</span><span class="op">,</span> <span class="dv">10</span><span class="op">))</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="testing">Testing</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> submodules/ota-rollout-engine</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">go</span> vet ./...</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">go</span> test ./...</span></code></pre></div>
+<p>The suite uses in-memory port fakes (<code>fakes_test.go</code>) and
+covers: cohort determinism, boundaries, monotonic growth, percentage
+approximation, and per-deployment isolation
+(<code>TestInCohortDeterminism</code>,
+<code>TestInCohortBoundaries</code>,
+<code>TestInCohortMonotonicGrowth</code>,
+<code>TestInCohortApproximatesPercentage</code>,
+<code>TestInCohortDeploymentIsolation</code>); the exhaustive pure
+decision table (<code>TestDecide</code>); plan validation and
+persistence (<code>TestCreateValidation</code>,
+<code>TestCreateValidPersists</code>); start idempotency/terminal guards
+(<code>TestStartIdempotent</code>,
+<code>TestStartFromTerminalErrors</code>); the full phase progression
+with a fake clock, advance-resets-phase-clock, window hold/expiry,
+post-boot abort, and the <strong>halt-wins</strong> invariant end-to-end
+(<code>TestEvaluateFullProgression</code>,
+<code>TestEvaluateAdvanceResetsPhaseClock</code>,
+<code>TestEvaluateWindowHold</code>,
+<code>TestEvaluateWindowExpiredHolds</code>,
+<code>TestEvaluatePostBootAbort</code>,
+<code>TestEvaluateHaltWinsViaEngine</code>); terminal idempotency
+(<code>TestEvaluateHaltIsIdempotent</code>,
+<code>TestEvaluateCompleteIsIdempotent</code>); and port/state error
+paths (<code>TestSaveErrorPropagates</code>,
+<code>TestLoadInvalidStatus</code>, <code>TestStateClone</code>).</p>
+<h2 id="reusable-building-brick">Reusable building brick</h2>
+<p>This is a <strong>reusable, independently versioned</strong> Helix
+OTA building brick (HelixConstitution §11.4.28 —
+submodules-as-equal-codebase). Consume it via its module path
+<code>github.com/HelixDevelopment/ota-rollout-engine</code>. It is a
+pure engine over a storage port + a clock port, reusable for any fleet
+rollout. Universal constitution rules are inherited via this repo’s
+<code>CLAUDE.md</code> / <code>AGENTS.md</code>
+(<code>## INHERITED FROM Helix Constitution</code>).</p>
+<h2 id="mirrors">Mirrors</h2>
+<ul>
+<li>GitHub: https://github.com/HelixDevelopment/ota-rollout-engine</li>
+<li>GitLab: https://gitlab.com/helixdevelopment1/ota-rollout-engine</li>
+</ul>
+</body>
+</html>
