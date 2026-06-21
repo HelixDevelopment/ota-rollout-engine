@@ -1,0 +1,6 @@
+{
+  "final_phase_idx": 2,
+  "phase": 0,
+  "status": "halted",
+  "test": "TestChaosInterleavedErrorAndHealthy"
+}
