@@ -103,8 +103,8 @@ type fakeClock struct {
 	now time.Time
 }
 
-func newFakeClock(t time.Time) *fakeClock { return &fakeClock{now: t} }
-func (c *fakeClock) Now() time.Time        { c.mu.Lock(); defer c.mu.Unlock(); return c.now }
+func newFakeClock(t time.Time) *fakeClock    { return &fakeClock{now: t} }
+func (c *fakeClock) Now() time.Time          { c.mu.Lock(); defer c.mu.Unlock(); return c.now }
 func (c *fakeClock) advance(d time.Duration) { c.mu.Lock(); defer c.mu.Unlock(); c.now = c.now.Add(d) }
 
 // ---------------------------------------------------------------------------
@@ -242,9 +242,9 @@ func TestChaosInterleavedErrorAndHealthy(t *testing.T) {
 	}
 
 	record := map[string]interface{}{
-		"test":   "TestChaosInterleavedErrorAndHealthy",
-		"status": st.Status,
-		"phase":  st.CurrentPhase,
+		"test":            "TestChaosInterleavedErrorAndHealthy",
+		"status":          st.Status,
+		"phase":           st.CurrentPhase,
 		"final_phase_idx": finalIdx,
 	}
 	ev, _ := json.MarshalIndent(record, "", "  ")

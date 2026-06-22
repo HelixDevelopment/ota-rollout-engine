@@ -1,6 +1,0 @@
-{
-  "completed": 32,
-  "deployments": 32,
-  "errors": 0,
-  "test": "TestStressConcurrentEngineEvaluate"
-}

@@ -9,3 +9,6 @@ go.work
 go.work.sum
 .env
 _exports/
+
+# Transient stress/chaos test outputs (any depth) — §11.4.30/§11.4.128, regenerated on run
+qa-results/
