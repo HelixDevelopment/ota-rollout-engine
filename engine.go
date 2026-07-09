@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sync"
 
 	otaprotocol "github.com/HelixDevelopment/ota-protocol"
 )
@@ -14,11 +15,30 @@ var ErrNilPort = errors.New("rollout: storage port and clock must not be nil")
 
 // Engine is the staged-rollout engine. It is stateless beyond its ports: all
 // rollout state lives behind [StoragePort], and the only clock it reads is the
-// injected [Clock]. An Engine is safe to share; concurrency control over a given
-// deployment id (if needed) is the storage layer's responsibility.
+// injected [Clock]. An Engine is safe to share across goroutines, INCLUDING
+// concurrent calls against the SAME deployment id: Create/Start/Evaluate each
+// perform a Load -> compute -> Save sequence, and the Engine serializes that
+// whole sequence per deployment id with an internal lock (see [Engine.critical])
+// so a concurrent stale read can never overwrite a just-committed transition
+// (in particular, the halt-wins-over-advance safety invariant holds under
+// concurrent Evaluate calls on one deployment id).
+//
+// This in-process serialization does NOT substitute for a storage layer's own
+// consistency guarantees across multiple Engine instances / processes sharing
+// one backing store (e.g. two control-plane replicas evaluating the same
+// deployment id against the same database concurrently) -- that remains the
+// storage layer's responsibility (e.g. row-level locking, optimistic
+// concurrency / compare-and-swap on write).
 type Engine struct {
 	store StoragePort
 	clock Clock
+
+	// keyLocks holds one *sync.Mutex per deployment id, created on first use.
+	// It serializes each deployment's Load-compute-Save critical section
+	// within this Engine instance so concurrent Create/Start/Evaluate calls
+	// on the SAME deployment id cannot interleave a stale read between
+	// another call's read and write.
+	keyLocks sync.Map // map[string]*sync.Mutex
 }
 
 // New constructs an Engine over the given ports. Both must be non-nil.
@@ -27,6 +47,18 @@ func New(store StoragePort, clock Clock) (*Engine, error) {
 		return nil, ErrNilPort
 	}
 	return &Engine{store: store, clock: clock}, nil
+}
+
+// critical acquires the per-deployment-id lock and returns an unlock func the
+// caller MUST defer immediately. Every method that performs a Load-compute-
+// Save sequence against deploymentID MUST wrap that sequence with this lock so
+// the sequence is atomic with respect to every other Create/Start/Evaluate
+// call on the same deployment id from this Engine instance.
+func (e *Engine) critical(deploymentID string) func() {
+	v, _ := e.keyLocks.LoadOrStore(deploymentID, &sync.Mutex{})
+	mu := v.(*sync.Mutex)
+	mu.Lock()
+	return mu.Unlock
 }
 
 // Create validates the plan and persists the initial pending state for a new
@@ -40,6 +72,7 @@ func (e *Engine) Create(ctx context.Context, deploymentID string, phases []Phase
 	if err := validatePhases(phases); err != nil {
 		return State{}, err
 	}
+	defer e.critical(deploymentID)()
 	st := State{
 		DeploymentID: deploymentID,
 		Phases:       append([]Phase(nil), phases...),
@@ -58,6 +91,7 @@ func (e *Engine) Create(ctx context.Context, deploymentID string, phases []Phase
 // returns the current state unchanged (it does not reset the phase clock), and
 // it is a no-op error to start a terminal rollout.
 func (e *Engine) Start(ctx context.Context, deploymentID string) (State, error) {
+	defer e.critical(deploymentID)()
 	st, err := e.load(ctx, deploymentID)
 	if err != nil {
 		return State{}, err
@@ -99,10 +133,18 @@ func (e *Engine) Start(ctx context.Context, deploymentID string) (State, error) 
 //
 // Evaluate is idempotent at a terminal status: evaluating a halted/completed
 // rollout returns a no-op decision and writes nothing.
+//
+// The whole Load -> decide -> Save sequence is atomic with respect to every
+// other Create/Start/Evaluate call on the SAME deploymentID from this Engine
+// instance (see [Engine.critical]): two concurrent Evaluate calls on one
+// deployment id can never both read the same pre-transition state and race to
+// write, which would otherwise let a stale ActionAdvance silently overwrite a
+// just-committed ActionHalt and violate the halt-wins-over-advance invariant.
 func (e *Engine) Evaluate(ctx context.Context, deploymentID string, v HealthVerdict) (Decision, error) {
 	if err := v.validate(); err != nil {
 		return Decision{}, err
 	}
+	defer e.critical(deploymentID)()
 	st, err := e.load(ctx, deploymentID)
 	if err != nil {
 		return Decision{}, err
