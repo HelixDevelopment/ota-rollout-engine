@@ -3,6 +3,7 @@ package rollout
 import (
 	"errors"
 	"fmt"
+	"math"
 
 	otaprotocol "github.com/HelixDevelopment/ota-protocol"
 )
@@ -36,7 +37,14 @@ type HealthVerdict struct {
 
 // validate checks the verdict rates are well-formed fractions.
 func (v HealthVerdict) validate() error {
-	if v.SuccessRate < 0 || v.SuccessRate > 1 || v.ErrorRate < 0 || v.ErrorRate > 1 {
+	// NaN must be rejected explicitly: every ordered comparison against NaN is
+	// false, so the range test below would pass a NaN rate. A NaN error_rate
+	// (e.g. a degenerate 0/0 = count(failure)/count(terminal) with no terminal
+	// devices) would then make `v.ErrorRate >= phase.ErrorThreshold` false and
+	// silently bypass the error-threshold HALT — the engine's primary safety
+	// invariant. (±Inf is already caught by the >1 / <0 bounds below.)
+	if math.IsNaN(v.SuccessRate) || math.IsNaN(v.ErrorRate) ||
+		v.SuccessRate < 0 || v.SuccessRate > 1 || v.ErrorRate < 0 || v.ErrorRate > 1 {
 		return fmt.Errorf("%w: success=%v error=%v", ErrVerdictRange, v.SuccessRate, v.ErrorRate)
 	}
 	return nil

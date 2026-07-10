@@ -3,6 +3,7 @@ package rollout
 import (
 	"errors"
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -141,7 +142,13 @@ func validatePhases(phases []Phase) error {
 			return fmt.Errorf("%w: phase %d = %d after %d", ErrPercentageNotMonotonic, i, p.Percentage, prev)
 		}
 		prev = p.Percentage
-		if p.SuccessThreshold < 0 || p.SuccessThreshold > 1 ||
+		// NaN must be rejected explicitly: every ordered comparison against NaN
+		// is false, so `NaN < 0 || NaN > 1` would be false and a NaN threshold
+		// would slip through — then `rate >= NaN` in decide() is also always
+		// false, silently disabling the halt (error) / advance (success) gate.
+		// (±Inf is already caught by the >1 / <0 bounds below.)
+		if math.IsNaN(p.SuccessThreshold) || math.IsNaN(p.ErrorThreshold) ||
+			p.SuccessThreshold < 0 || p.SuccessThreshold > 1 ||
 			p.ErrorThreshold < 0 || p.ErrorThreshold > 1 {
 			return fmt.Errorf("%w: phase %d", ErrThresholdRange, i)
 		}
