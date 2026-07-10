@@ -98,6 +98,14 @@ type State struct {
 	PhaseStartedAt time.Time
 	// UpdatedAt is the last time the engine wrote this state.
 	UpdatedAt time.Time
+	// HaltReason records WHY a halted rollout stopped (ReasonErrorThreshold or
+	// ReasonPostBootFailed) so that re-evaluating an already-halted rollout
+	// reports the ACTUAL halt cause in Decision.Reason rather than a hardcoded
+	// guess. It is set only on a HALT transition; the empty value means "not
+	// halted" (or a legacy state persisted before this field existed, in which
+	// case Evaluate falls back to ReasonErrorThreshold to preserve prior
+	// behaviour).
+	HaltReason Reason
 }
 
 // Clone returns a deep copy of the state so callers and storage fakes cannot

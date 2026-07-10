@@ -153,7 +153,14 @@ func (e *Engine) Evaluate(ctx context.Context, deploymentID string, v HealthVerd
 	// Idempotent terminal handling: nothing to do, no write.
 	switch st.Status {
 	case StatusHalted:
-		return Decision{Action: ActionHalt, Reason: ReasonErrorThreshold, Status: StatusHalted,
+		// Report the ACTUAL halt cause recorded at halt time. Fall back to
+		// ReasonErrorThreshold only for legacy states persisted before
+		// HaltReason existed (empty value), preserving prior behaviour.
+		haltReason := st.HaltReason
+		if haltReason == "" {
+			haltReason = ReasonErrorThreshold
+		}
+		return Decision{Action: ActionHalt, Reason: haltReason, Status: StatusHalted,
 			DeviceStatus: otaprotocol.DeviceDeployFailed}, nil
 	case StatusCompleted:
 		return Decision{Action: ActionComplete, Reason: ReasonSuccessThreshold, Status: StatusCompleted,
@@ -173,6 +180,9 @@ func (e *Engine) Evaluate(ctx context.Context, deploymentID string, v HealthVerd
 	switch dec.Action {
 	case ActionHalt:
 		st.Status = StatusHalted
+		// Persist the halt cause so a later re-evaluation of this terminal
+		// state reports the true reason (error-threshold vs post-boot failure).
+		st.HaltReason = dec.Reason
 	case ActionComplete:
 		st.Status = StatusCompleted
 	case ActionAdvance:
