@@ -28,8 +28,15 @@ func decide(phase Phase, v HealthVerdict, phaseStartedAt, now time.Time, finalPh
 
 	// 2. SAFETY INVARIANT: error threshold breach -> HALT, checked before any
 	// advance path so a concurrent success+error breach always halts. The
-	// comparison is >= so a rate exactly at the threshold is a breach.
-	if v.ErrorRate >= phase.ErrorThreshold {
+	// comparison is >= so a rate exactly at the threshold is a breach — BUT an
+	// ErrorRate of 0 never breaches (HC-1): ErrorThreshold==0 is a LEGAL value
+	// (validatePhases only rejects <0 / >1 / NaN) meaning "zero tolerance — halt
+	// on ANY observed failure", NOT "always halt". Without the `> 0` guard a
+	// perfectly healthy final phase (ErrorRate 0.0, ErrorThreshold 0.0) would
+	// halt-as-failed on `0 >= 0`, making the success/advance path unreachable
+	// for every zero-tolerance rollout (§11.4.108: a healthy rollout reported
+	// permanently FAILED).
+	if v.ErrorRate > 0 && v.ErrorRate >= phase.ErrorThreshold {
 		return Decision{
 			Action: ActionHalt, Reason: ReasonErrorThreshold, Status: StatusHalted,
 			DeviceStatus: otaprotocol.DeviceDeployFailed,
