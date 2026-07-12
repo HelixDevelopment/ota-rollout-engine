@@ -1,0 +1,6 @@
+schema_version: 1
+deps: []
+transitive_handling:
+  recursive: true
+  conflict_resolution: operator-required
+language_specific_subtree: false
